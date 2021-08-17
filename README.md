@@ -1,2 +1,2 @@
 # clone-doxywizard
-clone-doxywizard for study
+A standalone doxywizard for Qt study
