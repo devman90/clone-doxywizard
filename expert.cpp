@@ -91,6 +91,7 @@ Expert::Expert()
   }
   m_rootElement = configXml.documentElement();
 
+  // thexl74: Creating option pages from an XML configuration file.
   createTopics(m_rootElement);
   m_helper = new QTextBrowser;
   m_helper->setReadOnly(true);
@@ -135,6 +136,7 @@ void Expert::createTopics(const QDomElement &rootElem)
   QDomElement childElem = rootElem.firstChildElement();
   while (!childElem.isNull())
   {
+    // thexl74: A group == A topic(consists of options)
     if (childElem.tagName()==SA("group"))
     {
       // Remove _ from a group name like: Source_Browser
@@ -143,6 +145,7 @@ void Expert::createTopics(const QDomElement &rootElem)
       if (setting.isEmpty() || IS_SUPPORTED(setting.toLatin1()))
       {
         items.append(new QTreeWidgetItem((QTreeWidget*)0,QStringList(name)));
+        // thexl74: Create a topic page.
         QWidget *widget = createTopicWidget(childElem);
         m_topics[name] = widget;
         m_topicStack->addWidget(widget);
@@ -500,6 +503,12 @@ QWidget *Expert::createTopicWidget(QDomElement &elem)
   QGridLayout *layout = new QGridLayout(topic);
   QDomElement child   = elem.firstChildElement();
   int row=0;
+  // thexl74: Create each option and a related edit widget.
+  // thexl74: Each option inserts its own widgets and increase the row index.
+  // thexl74: (IDEA) How I do use custom edit widgets?
+  // thexl74: (IDEA) type attribute -> Option factories
+  // thexl74: (IDEA) Create "AbstractOption" class
+
   while (!child.isNull())
   {
     QString setting = child.attribute(SA("setting"));
